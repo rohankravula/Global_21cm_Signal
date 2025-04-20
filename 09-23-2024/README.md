@@ -2,10 +2,11 @@
 
 **Discussion Topics:**
 
-  1. Discussed what the Global 21cm Signal is
-     a. Went over relevant research groups(CosmoLab, EDGES, SARAS), relevant physics(Kepler's Law, Einstein's Special and General relativity)
-     b. b. Brief overview of the Standard Model of Cosmology and Lambda CDM(Cold Dark Matter)
+- Basics of the Global 21cm Signal
+- Basics of Kepler's Law, Einstein's Special and General Relativity
+- Relevant research groups
+- Standard Model of Cosmology and Lambda CDM(Cold Dark Matter)
 
-Assignments:
+**Assignments:**
 
-  1. General reading on the different groups, the Global 21cm Signal, and research efforts.
+- General reading on the different groups, the Global 21cm Signal, and research efforts.
