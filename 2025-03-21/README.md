@@ -3,7 +3,7 @@
 **Discussion Topics:**
 
 - Go over the ARES Repository
-- Discuss emualtors and their relevance to the project
+- Discuss emulators and their relevance to the project
 
 **Assignments:**
 
