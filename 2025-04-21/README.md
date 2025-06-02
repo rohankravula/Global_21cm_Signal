@@ -17,7 +17,7 @@
 
 Some Notes:
 
-MAE(Mean Absolute Error)- Calculates the average absolute difference between predicted and actual values, more resistnat to outliers
+MAE(Mean Absolute Error)- Calculates the average absolute difference between predicted and actual values, more resistnat to outliers.
 
-MSE(Mean Squared Error)- Calculates the average of the squared differences between predicted and actual values, very sensitive to outliers
+MSE(Mean Squared Error)- Calculates the average of the squared differences between predicted and actual values, very sensitive to outliers.
 
