@@ -14,3 +14,10 @@
 1. Look at the ML for the 21cmVAE
 2. Send the code for the training data generation
 3. Using training Data from file *Practice Training Data Outputs* make a ML that can accurately predict the value of Y based on random values of A, b, and x
+
+Some Notes:
+
+MAE(Mean Absolute Error)- Calculates the average absolute difference between predicted and actual values, more resistnat to outliers.
+
+MSE(Mean Squared Error)- Calculates the average of the squared differences between predicted and actual values, very sensitive to outliers.
+
