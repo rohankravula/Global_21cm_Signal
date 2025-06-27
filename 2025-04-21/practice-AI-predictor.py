@@ -66,7 +66,7 @@ print(f"\nOptimal n_estimators: {optimal_n}")
 print(f"Minimum Validation MSE: {min(val_errors):.4f}")
 
 # Create output directory
-output_dir = os.path.join(os.path.expanduser("~"), "Downloads", "model_analysis")
+output_dir = os.path.join(os.path.expanduser("~"), "Desktop", "model_analysis")
 os.makedirs(output_dir, exist_ok=True)
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
