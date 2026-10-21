@@ -2,7 +2,7 @@
 seed: 42
 
 data:
-  dir: ../Global_21cm_Signal/new_data     # folder of sigma_*_mass_*_dTb.npz files
+  dir: "../Data files/new_data"     # folder of sigma_*_mass_*_dTb.npz files
   glob: "sigma_*_mass_*_dTb.npz"
   z_min: 5.1                              # cropped range; files start at z~5.0-5.003, so stay just above 5
   z_max: 1000.0
