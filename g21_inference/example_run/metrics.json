@@ -1,0 +1,988 @@
+{
+  "n_curves": 374,
+  "split_sizes": {
+    "train": 262,
+    "val": 56,
+    "test": 56
+  },
+  "n_pca_components": 30,
+  "pca_variance_kept": 0.999624,
+  "grid_step_dex": [
+    0.251,
+    0.337
+  ],
+  "emulator_validation": {
+    "emulator_rmse_asinh": 0.3398,
+    "pca_floor_rmse_asinh": 0.0939,
+    "predict_mean_curve_rmse_asinh": 1.9515
+  },
+  "emulator_test": {
+    "emulator_rmse_asinh": 0.2228,
+    "pca_floor_rmse_asinh": 0.0739,
+    "predict_mean_curve_rmse_asinh": 2.0208
+  },
+  "validation_selection": {
+    "rf": {
+      "best_config": {
+        "min_samples_leaf": 2
+      },
+      "val_mae_dex": 0.393,
+      "all_val_mae_dex": [
+        0.4027,
+        0.393
+      ]
+    },
+    "extra_trees": {
+      "best_config": {
+        "min_samples_leaf": 1
+      },
+      "val_mae_dex": 0.2224,
+      "all_val_mae_dex": [
+        0.2224
+      ]
+    },
+    "knn": {
+      "best_config": {
+        "n_neighbors": 1
+      },
+      "val_mae_dex": 0.3293,
+      "all_val_mae_dex": [
+        0.3293,
+        0.398,
+        0.4728
+      ]
+    },
+    "mlp": {
+      "best_config": {
+        "hidden_layer_sizes": [
+          128,
+          128
+        ],
+        "alpha": 0.0001
+      },
+      "val_mae_dex": 0.6511,
+      "all_val_mae_dex": [
+        0.6511,
+        0.8311,
+        2.6697
+      ]
+    },
+    "forward_fit_map": {
+      "val_mae_dex": 0.3412
+    },
+    "forward_fit_mean": {
+      "val_mae_dex": 0.3173
+    }
+  },
+  "test_results": {
+    "noise_0.0": {
+      "baseline_train_mean": {
+        "mae_dex": [
+          0.987,
+          1.693
+        ],
+        "median_abs_err_dex": [
+          1.0,
+          1.7956
+        ],
+        "rmse_dex": [
+          1.1283,
+          1.921
+        ],
+        "within_1_grid_step": [
+          0.107,
+          0.089
+        ],
+        "within_1_grid_step_both": 0.0
+      },
+      "rf": {
+        "mae_dex": [
+          0.0728,
+          0.461
+        ],
+        "median_abs_err_dex": [
+          0.046,
+          0.3564
+        ],
+        "rmse_dex": [
+          0.1121,
+          0.6101
+        ],
+        "within_1_grid_step": [
+          0.964,
+          0.482
+        ],
+        "within_1_grid_step_both": 0.464
+      },
+      "extra_trees": {
+        "mae_dex": [
+          0.0401,
+          0.1994
+        ],
+        "median_abs_err_dex": [
+          0.0101,
+          0.1264
+        ],
+        "rmse_dex": [
+          0.086,
+          0.2862
+        ],
+        "within_1_grid_step": [
+          0.964,
+          0.804
+        ],
+        "within_1_grid_step_both": 0.786
+      },
+      "knn": {
+        "mae_dex": [
+          0.0759,
+          0.4498
+        ],
+        "median_abs_err_dex": [
+          0.0,
+          0.3372
+        ],
+        "rmse_dex": [
+          0.1735,
+          0.8114
+        ],
+        "within_1_grid_step": [
+          0.821,
+          0.607
+        ],
+        "within_1_grid_step_both": 0.518
+      },
+      "mlp": {
+        "mae_dex": [
+          0.1994,
+          0.9021
+        ],
+        "median_abs_err_dex": [
+          0.1083,
+          0.7169
+        ],
+        "rmse_dex": [
+          0.3053,
+          1.1881
+        ],
+        "within_1_grid_step": [
+          0.75,
+          0.268
+        ],
+        "within_1_grid_step_both": 0.232
+      },
+      "forward_fit_MAP": {
+        "mae_dex": [
+          0.0524,
+          0.6076
+        ],
+        "median_abs_err_dex": [
+          0.0114,
+          0.192
+        ],
+        "rmse_dex": [
+          0.1097,
+          1.0324
+        ],
+        "within_1_grid_step": [
+          0.839,
+          0.643
+        ],
+        "within_1_grid_step_both": 0.571
+      },
+      "forward_fit_mean": {
+        "mae_dex": [
+          0.0522,
+          0.649
+        ],
+        "median_abs_err_dex": [
+          0.0102,
+          0.2326
+        ],
+        "rmse_dex": [
+          0.1084,
+          1.0568
+        ],
+        "within_1_grid_step": [
+          0.911,
+          0.607
+        ],
+        "within_1_grid_step_both": 0.589
+      },
+      "by_sigma_bin": {
+        "rf": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.042,
+              0.532
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.069,
+              0.678
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.089,
+              0.341
+            ]
+          }
+        },
+        "extra_trees": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.027,
+              0.268
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.059,
+              0.296
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.039,
+              0.129
+            ]
+          }
+        },
+        "knn": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.054,
+              0.376
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.167,
+              0.801
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.05,
+              0.344
+            ]
+          }
+        },
+        "mlp": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.067,
+              1.289
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.218,
+              1.408
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.254,
+              0.519
+            ]
+          }
+        },
+        "forward_fit_MAP": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.114,
+              1.306
+            ],
+            "median_posterior_std_dex": [
+              0.01,
+              1.302
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.052,
+              1.067
+            ],
+            "median_posterior_std_dex": [
+              0.001,
+              0.748
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.024,
+              0.098
+            ],
+            "median_posterior_std_dex": [
+              0.004,
+              0.034
+            ]
+          }
+        },
+        "forward_fit_mean": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.105,
+              1.322
+            ],
+            "median_posterior_std_dex": [
+              0.01,
+              1.302
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.066,
+              1.277
+            ],
+            "median_posterior_std_dex": [
+              0.001,
+              0.748
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.022,
+              0.084
+            ],
+            "median_posterior_std_dex": [
+              0.004,
+              0.034
+            ]
+          }
+        }
+      },
+      "forward_fit_median_posterior_std_dex": [
+        0.005,
+        0.096
+      ]
+    },
+    "noise_0.05": {
+      "baseline_train_mean": {
+        "mae_dex": [
+          0.987,
+          1.693
+        ],
+        "median_abs_err_dex": [
+          1.0,
+          1.7956
+        ],
+        "rmse_dex": [
+          1.1283,
+          1.921
+        ],
+        "within_1_grid_step": [
+          0.107,
+          0.089
+        ],
+        "within_1_grid_step_both": 0.0
+      },
+      "rf": {
+        "mae_dex": [
+          0.1059,
+          0.7294
+        ],
+        "median_abs_err_dex": [
+          0.0815,
+          0.4355
+        ],
+        "rmse_dex": [
+          0.1459,
+          1.0187
+        ],
+        "within_1_grid_step": [
+          0.911,
+          0.446
+        ],
+        "within_1_grid_step_both": 0.411
+      },
+      "extra_trees": {
+        "mae_dex": [
+          0.0712,
+          0.6201
+        ],
+        "median_abs_err_dex": [
+          0.0345,
+          0.1276
+        ],
+        "rmse_dex": [
+          0.1181,
+          1.1267
+        ],
+        "within_1_grid_step": [
+          0.929,
+          0.679
+        ],
+        "within_1_grid_step_both": 0.643
+      },
+      "knn": {
+        "mae_dex": [
+          0.0981,
+          0.8514
+        ],
+        "median_abs_err_dex": [
+          0.0,
+          0.3424
+        ],
+        "rmse_dex": [
+          0.2002,
+          1.274
+        ],
+        "within_1_grid_step": [
+          0.804,
+          0.411
+        ],
+        "within_1_grid_step_both": 0.304
+      },
+      "mlp": {
+        "mae_dex": [
+          0.2295,
+          0.8819
+        ],
+        "median_abs_err_dex": [
+          0.1482,
+          0.7208
+        ],
+        "rmse_dex": [
+          0.3314,
+          1.1829
+        ],
+        "within_1_grid_step": [
+          0.696,
+          0.321
+        ],
+        "within_1_grid_step_both": 0.214
+      },
+      "forward_fit_MAP": {
+        "mae_dex": [
+          0.052,
+          0.7569
+        ],
+        "median_abs_err_dex": [
+          0.0114,
+          0.1455
+        ],
+        "rmse_dex": [
+          0.1089,
+          1.3391
+        ],
+        "within_1_grid_step": [
+          0.875,
+          0.607
+        ],
+        "within_1_grid_step_both": 0.554
+      },
+      "forward_fit_mean": {
+        "mae_dex": [
+          0.046,
+          0.6735
+        ],
+        "median_abs_err_dex": [
+          0.0102,
+          0.1804
+        ],
+        "rmse_dex": [
+          0.0978,
+          1.1344
+        ],
+        "within_1_grid_step": [
+          0.946,
+          0.589
+        ],
+        "within_1_grid_step_both": 0.571
+      },
+      "by_sigma_bin": {
+        "rf": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.137,
+              1.064
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.113,
+              1.287
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.089,
+              0.35
+            ]
+          }
+        },
+        "extra_trees": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.121,
+              1.366
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.093,
+              0.976
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.039,
+              0.129
+            ]
+          }
+        },
+        "knn": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.124,
+              1.619
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.188,
+              1.22
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.05,
+              0.345
+            ]
+          }
+        },
+        "mlp": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.07,
+              1.184
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.258,
+              1.417
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.293,
+              0.527
+            ]
+          }
+        },
+        "forward_fit_MAP": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.112,
+              1.906
+            ],
+            "median_posterior_std_dex": [
+              0.011,
+              1.294
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.052,
+              1.067
+            ],
+            "median_posterior_std_dex": [
+              0.001,
+              0.791
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.024,
+              0.097
+            ],
+            "median_posterior_std_dex": [
+              0.003,
+              0.033
+            ]
+          }
+        },
+        "forward_fit_mean": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.081,
+              1.446
+            ],
+            "median_posterior_std_dex": [
+              0.011,
+              1.294
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.065,
+              1.246
+            ],
+            "median_posterior_std_dex": [
+              0.001,
+              0.791
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.022,
+              0.084
+            ],
+            "median_posterior_std_dex": [
+              0.003,
+              0.033
+            ]
+          }
+        }
+      },
+      "forward_fit_median_posterior_std_dex": [
+        0.005,
+        0.106
+      ]
+    },
+    "noise_0.2": {
+      "baseline_train_mean": {
+        "mae_dex": [
+          0.987,
+          1.693
+        ],
+        "median_abs_err_dex": [
+          1.0,
+          1.7956
+        ],
+        "rmse_dex": [
+          1.1283,
+          1.921
+        ],
+        "within_1_grid_step": [
+          0.107,
+          0.089
+        ],
+        "within_1_grid_step_both": 0.0
+      },
+      "rf": {
+        "mae_dex": [
+          0.1342,
+          0.8328
+        ],
+        "median_abs_err_dex": [
+          0.0958,
+          0.4582
+        ],
+        "rmse_dex": [
+          0.1921,
+          1.2123
+        ],
+        "within_1_grid_step": [
+          0.875,
+          0.429
+        ],
+        "within_1_grid_step_both": 0.411
+      },
+      "extra_trees": {
+        "mae_dex": [
+          0.1398,
+          0.8688
+        ],
+        "median_abs_err_dex": [
+          0.0494,
+          0.2067
+        ],
+        "rmse_dex": [
+          0.2275,
+          1.5289
+        ],
+        "within_1_grid_step": [
+          0.821,
+          0.625
+        ],
+        "within_1_grid_step_both": 0.571
+      },
+      "knn": {
+        "mae_dex": [
+          0.1467,
+          0.9997
+        ],
+        "median_abs_err_dex": [
+          0.0,
+          0.3424
+        ],
+        "rmse_dex": [
+          0.2886,
+          1.6109
+        ],
+        "within_1_grid_step": [
+          0.821,
+          0.429
+        ],
+        "within_1_grid_step_both": 0.375
+      },
+      "mlp": {
+        "mae_dex": [
+          0.3372,
+          1.0888
+        ],
+        "median_abs_err_dex": [
+          0.3134,
+          0.9415
+        ],
+        "rmse_dex": [
+          0.4072,
+          1.398
+        ],
+        "within_1_grid_step": [
+          0.375,
+          0.25
+        ],
+        "within_1_grid_step_both": 0.089
+      },
+      "forward_fit_MAP": {
+        "mae_dex": [
+          0.0639,
+          0.8155
+        ],
+        "median_abs_err_dex": [
+          0.0114,
+          0.1849
+        ],
+        "rmse_dex": [
+          0.1212,
+          1.5198
+        ],
+        "within_1_grid_step": [
+          0.911,
+          0.643
+        ],
+        "within_1_grid_step_both": 0.589
+      },
+      "forward_fit_mean": {
+        "mae_dex": [
+          0.0567,
+          0.5823
+        ],
+        "median_abs_err_dex": [
+          0.0111,
+          0.1759
+        ],
+        "rmse_dex": [
+          0.1105,
+          0.9568
+        ],
+        "within_1_grid_step": [
+          0.929,
+          0.607
+        ],
+        "within_1_grid_step_both": 0.571
+      },
+      "by_sigma_bin": {
+        "rf": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.188,
+              1.652
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.163,
+              1.095
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.097,
+              0.346
+            ]
+          }
+        },
+        "extra_trees": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.331,
+              2.006
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.158,
+              1.283
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.043,
+              0.173
+            ]
+          }
+        },
+        "knn": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.337,
+              2.002
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.188,
+              1.471
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.042,
+              0.343
+            ]
+          }
+        },
+        "mlp": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.282,
+              1.599
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.281,
+              1.387
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.385,
+              0.731
+            ]
+          }
+        },
+        "forward_fit_MAP": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.16,
+              2.15
+            ],
+            "median_posterior_std_dex": [
+              0.089,
+              1.461
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.052,
+              1.037
+            ],
+            "median_posterior_std_dex": [
+              0.024,
+              0.929
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.024,
+              0.104
+            ],
+            "median_posterior_std_dex": [
+              0.003,
+              0.04
+            ]
+          }
+        },
+        "forward_fit_mean": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.122,
+              1.13
+            ],
+            "median_posterior_std_dex": [
+              0.089,
+              1.461
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.068,
+              1.155
+            ],
+            "median_posterior_std_dex": [
+              0.024,
+              0.929
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.022,
+              0.098
+            ],
+            "median_posterior_std_dex": [
+              0.003,
+              0.04
+            ]
+          }
+        }
+      },
+      "forward_fit_median_posterior_std_dex": [
+        0.011,
+        0.125
+      ]
+    }
+  }
+}

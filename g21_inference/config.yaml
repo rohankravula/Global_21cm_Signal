@@ -1,0 +1,49 @@
+# All tunable settings live here; CLI flags in train.py can override paths.
+seed: 42
+
+data:
+  dir: ../Global_21cm_Signal/new_data     # folder of sigma_*_mass_*_dTb.npz files
+  glob: "sigma_*_mass_*_dTb.npz"
+  z_min: 5.1                              # cropped range; files start at z~5.0-5.003, so stay just above 5
+  z_max: 1000.0
+  n_grid: 400                             # points on the common grid (uniform in log(1+z))
+
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+  keep_boundary_in_train: true            # edge-of-grid points stay in train => val/test = interpolation
+
+transform:
+  asinh_scale_mK: 1.0                     # y = asinh(dTb / scale); tames the -1e5..+40 mK dynamic range
+
+reducer:
+  variance_to_keep: 0.9999                # PCA on transformed curves, train set only
+  max_components: 30
+
+forward:                                  # Gaussian-process emulator: (log sigma, log mass) -> PCA coefficients
+  n_restarts: 2
+  nu: 2.5
+
+inference:
+  grid_per_axis: 121                      # dense parameter grid used for forward-fit inference
+  posterior_noise: 0.05                   # assumed observation noise (asinh units); emulator error is added on top, calibrated on val
+  refit_on_train_val: true                # after model selection on val, refit chosen models on train+val
+  candidates:                             # direct inverse models; best config per model picked on val
+    rf:
+      - {min_samples_leaf: 1}
+      - {min_samples_leaf: 2}
+    extra_trees:
+      - {min_samples_leaf: 1}
+    knn:
+      - {n_neighbors: 1}
+      - {n_neighbors: 3, weights: distance}
+      - {n_neighbors: 5, weights: distance}
+    mlp:
+      - {hidden_layer_sizes: [128, 128], alpha: 0.0001}
+      - {hidden_layer_sizes: [64, 64], alpha: 0.01}
+      - {hidden_layer_sizes: [64, 64], alpha: 0.001, solver: lbfgs, max_iter: 2000}
+
+evaluation:
+  sigma_bins: [-43, -42, -41, -39]        # errors are also reported per true-sigma regime (low sigma => mass is degenerate)
+  noise_levels: [0.0, 0.05, 0.2]          # stress test: Gaussian noise added to test curves (asinh units)
