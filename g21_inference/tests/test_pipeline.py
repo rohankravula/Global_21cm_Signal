@@ -86,6 +86,8 @@ def test_pipeline_recovers_parameters_on_synthetic_data(tmp_path):
         "split": {"train": 0.7, "val": 0.15, "test": 0.15, "keep_boundary_in_train": True},
         "transform": {"asinh_scale_mK": 1.0},
         "reducer": {"variance_to_keep": 0.9999, "max_components": 8},
+        "curve_forest": {"n_estimators": 60, "selection_trees": 30,
+                         "max_features": {"sigma": [0.1, 0.5], "mass": [0.1, 0.5]}},
         "forward": {"n_restarts": 0, "nu": 2.5},
         "inference": {"grid_per_axis": 41, "posterior_noise": 0.05, "refit_on_train_val": True,
                       "candidates": {"extra_trees": [{"min_samples_leaf": 1}], "knn": [{"n_neighbors": 1}]}},
@@ -95,8 +97,21 @@ def test_pipeline_recovers_parameters_on_synthetic_data(tmp_path):
     res = m["test_results"]["noise_0.0"]
     # every method should beat "always predict the training mean" by a wide margin
     base = np.mean(res["baseline_train_mean"]["mae_dex"])
-    for name in ("extra_trees", "forward_fit_mean"):
+    for name in ("curve_forest", "extra_trees", "forward_fit_mean"):
         assert np.mean(res[name]["mae_dex"]) < 0.25 * base, name
     assert res["forward_fit_mean"]["within_1_grid_step_both"] >= 0.8
     for f in ("metrics.json", "split.json", "bundle.joblib", "test_pred_vs_true.png"):
         assert (tmp_path / f).exists()
+
+
+def test_curve_forest_returns_mean_and_spread_and_is_deterministic():
+    from g21.models import CurveForest
+    rng = np.random.default_rng(0)
+    y = rng.normal(size=(80, 30))
+    u = np.column_stack([y[:, 0] * 0.5 + 0.5, y[:, 1] ** 2])       # learnable from the curve
+    a = CurveForest((0.3, 0.3), 40, seed=3).fit(y, u)
+    b = CurveForest((0.3, 0.3), 40, seed=3).fit(y, u)
+    m, sd = a.predict(y[:5], return_std=True)
+    assert m.shape == (5, 2) and sd.shape == (5, 2) and (sd >= 0).all()
+    assert np.allclose(m, b.predict(y[:5]))
+    assert np.abs(m - u[:5]).mean() < 0.3

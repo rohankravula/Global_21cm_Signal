@@ -21,6 +21,13 @@ reducer:
   variance_to_keep: 0.9999                # PCA on transformed curves, train set only
   max_components: 30
 
+curve_forest:                             # main model: extra-trees on the full asinh curve, one forest per parameter
+  n_estimators: 800
+  selection_trees: 300                    # smaller forests used only to choose max_features on validation
+  max_features:                           # candidates; best per parameter is picked on the validation set
+    sigma: [0.02, 0.05, 0.12]
+    mass: [0.1, 0.3, 0.5, 1.0]
+
 forward:                                  # Gaussian-process emulator: (log sigma, log mass) -> PCA coefficients
   n_restarts: 2
   nu: 2.5

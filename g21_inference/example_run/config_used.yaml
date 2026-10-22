@@ -1,6 +1,6 @@
 seed: 42
 data:
-  dir: ../Global_21cm_Signal/new_data
+  dir: ../Data files/new_data
   glob: sigma_*_mass_*_dTb.npz
   z_min: 5.1
   z_max: 1000.0
@@ -15,6 +15,19 @@ transform:
 reducer:
   variance_to_keep: 0.9999
   max_components: 30
+curve_forest:
+  n_estimators: 800
+  selection_trees: 300
+  max_features:
+    sigma:
+    - 0.02
+    - 0.05
+    - 0.12
+    mass:
+    - 0.1
+    - 0.3
+    - 0.5
+    - 1.0
 forward:
   n_restarts: 2
   nu: 2.5

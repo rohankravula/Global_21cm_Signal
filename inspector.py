@@ -71,7 +71,13 @@ def show_gui(df, max_rows=5000):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("file", help="path to a .npz file")
+    ap.add_argument(
+        "file",
+        nargs="?",
+        default=os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "Data files", "new_data",
+                            "sigma_1.0e-40_mass_1.0e+00_dTb.npz"),
+        help="path to a .npz file (default: a sample file in Data files/new_data)",)    
     ap.add_argument("--rows", type=int, default=15, help="rows to print (default 15)")
     ap.add_argument("--plot", action="store_true", help="save a dTb plot as PNG")
     ap.add_argument("--gui", action="store_true", help="open a scrollable table window")

@@ -64,7 +64,7 @@
       "all_val_mae_dex": [
         0.6511,
         0.8311,
-        2.6697
+        3.9589
       ]
     },
     "forward_fit_map": {
@@ -72,6 +72,27 @@
     },
     "forward_fit_mean": {
       "val_mae_dex": 0.3173
+    },
+    "curve_forest": {
+      "sigma": {
+        "best_max_features": 0.02,
+        "val_mae_dex": 0.0364,
+        "all_val_mae_dex": [
+          0.0364,
+          0.0384,
+          0.0373
+        ]
+      },
+      "mass": {
+        "best_max_features": 0.5,
+        "val_mae_dex": 0.0839,
+        "all_val_mae_dex": [
+          0.1022,
+          0.0891,
+          0.0839,
+          0.0905
+        ]
+      }
     }
   },
   "test_results": {
@@ -94,6 +115,25 @@
           0.089
         ],
         "within_1_grid_step_both": 0.0
+      },
+      "curve_forest": {
+        "mae_dex": [
+          0.0222,
+          0.0499
+        ],
+        "median_abs_err_dex": [
+          0.0014,
+          0.0268
+        ],
+        "rmse_dex": [
+          0.0463,
+          0.0862
+        ],
+        "within_1_grid_step": [
+          1.0,
+          0.982
+        ],
+        "within_1_grid_step_both": 0.982
       },
       "rf": {
         "mae_dex": [
@@ -210,6 +250,41 @@
         "within_1_grid_step_both": 0.589
       },
       "by_sigma_bin": {
+        "curve_forest": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.033,
+              0.089
+            ],
+            "median_posterior_std_dex": [
+              0.004,
+              0.262
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.034,
+              0.024
+            ],
+            "median_posterior_std_dex": [
+              0.056,
+              0.291
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.013,
+              0.042
+            ],
+            "median_posterior_std_dex": [
+              0.066,
+              0.285
+            ]
+          }
+        },
         "rf": {
           "log_sigma[-43,-42]": {
             "n": 14,
@@ -373,6 +448,14 @@
           }
         }
       },
+      "curve_forest_median_tree_spread_dex": [
+        0.042,
+        0.283
+      ],
+      "curve_forest_spread_vs_error_spearman": [
+        0.96,
+        0.35
+      ],
       "forward_fit_median_posterior_std_dex": [
         0.005,
         0.096
@@ -397,6 +480,25 @@
           0.089
         ],
         "within_1_grid_step_both": 0.0
+      },
+      "curve_forest": {
+        "mae_dex": [
+          0.1612,
+          0.7828
+        ],
+        "median_abs_err_dex": [
+          0.052,
+          0.1095
+        ],
+        "rmse_dex": [
+          0.2688,
+          1.4775
+        ],
+        "within_1_grid_step": [
+          0.75,
+          0.679
+        ],
+        "within_1_grid_step_both": 0.643
       },
       "rf": {
         "mae_dex": [
@@ -513,6 +615,41 @@
         "within_1_grid_step_both": 0.571
       },
       "by_sigma_bin": {
+        "curve_forest": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.497,
+              2.048
+            ],
+            "median_posterior_std_dex": [
+              0.497,
+              1.456
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.121,
+              1.114
+            ],
+            "median_posterior_std_dex": [
+              0.361,
+              1.196
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.021,
+              0.06
+            ],
+            "median_posterior_std_dex": [
+              0.14,
+              0.46
+            ]
+          }
+        },
         "rf": {
           "log_sigma[-43,-42]": {
             "n": 14,
@@ -676,6 +813,14 @@
           }
         }
       },
+      "curve_forest_median_tree_spread_dex": [
+        0.259,
+        0.958
+      ],
+      "curve_forest_spread_vs_error_spearman": [
+        0.94,
+        0.82
+      ],
       "forward_fit_median_posterior_std_dex": [
         0.005,
         0.106
@@ -700,6 +845,25 @@
           0.089
         ],
         "within_1_grid_step_both": 0.0
+      },
+      "curve_forest": {
+        "mae_dex": [
+          0.3094,
+          1.0159
+        ],
+        "median_abs_err_dex": [
+          0.061,
+          0.2994
+        ],
+        "rmse_dex": [
+          0.4874,
+          1.7356
+        ],
+        "within_1_grid_step": [
+          0.607,
+          0.518
+        ],
+        "within_1_grid_step_both": 0.464
       },
       "rf": {
         "mae_dex": [
@@ -816,6 +980,41 @@
         "within_1_grid_step_both": 0.571
       },
       "by_sigma_bin": {
+        "curve_forest": {
+          "log_sigma[-43,-42]": {
+            "n": 14,
+            "mae_dex": [
+              0.902,
+              2.408
+            ],
+            "median_posterior_std_dex": [
+              0.701,
+              1.43
+            ]
+          },
+          "log_sigma[-42,-41]": {
+            "n": 12,
+            "mae_dex": [
+              0.301,
+              1.47
+            ],
+            "median_posterior_std_dex": [
+              0.58,
+              1.383
+            ]
+          },
+          "log_sigma[-41,-39]": {
+            "n": 30,
+            "mae_dex": [
+              0.036,
+              0.185
+            ],
+            "median_posterior_std_dex": [
+              0.221,
+              0.659
+            ]
+          }
+        },
         "rf": {
           "log_sigma[-43,-42]": {
             "n": 14,
@@ -979,6 +1178,14 @@
           }
         }
       },
+      "curve_forest_median_tree_spread_dex": [
+        0.381,
+        1.156
+      ],
+      "curve_forest_spread_vs_error_spearman": [
+        0.88,
+        0.78
+      ],
       "forward_fit_median_posterior_std_dex": [
         0.011,
         0.125

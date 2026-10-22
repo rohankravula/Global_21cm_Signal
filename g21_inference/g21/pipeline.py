@@ -9,6 +9,8 @@ from pathlib import Path
 import joblib
 import numpy as np
 import yaml
+from scipy.stats import spearmanr
+from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.preprocessing import StandardScaler
 
 from .data import Dataset, split_indices
@@ -16,9 +18,27 @@ from .evaluate import (binned, grid_steps, mean_mae, param_metrics, plot_emulato
                        plot_pred_vs_true, reconstruction_rmse)
 from .features import AsinhTransform, CurveReducer, ParamScaler
 from .inference import GridPosterior, calibrate_inflation
-from .models import ForwardEmulator, make_inverse
+from .models import CurveForest, ForwardEmulator, make_inverse
 
 log = logging.getLogger(__name__)
+
+
+def _select_forest_max_features(cfg_f, y_tr, x_tr, y_va, p_va, sc, seed):
+    """Pick max_features separately for sigma and mass by validation MAE (in dex)."""
+    best, report = [], {}
+    for j, name in enumerate(("sigma", "mass")):
+        scores = []
+        for mf in cfg_f["max_features"][name]:
+            f = ExtraTreesRegressor(cfg_f["selection_trees"], max_features=mf,
+                                    random_state=seed + j, n_jobs=-1).fit(y_tr, x_tr[:, j])
+            pred = f.predict(y_va) * sc.span_[j] + sc.lo_[j]
+            scores.append(float(np.abs(pred - p_va[:, j]).mean()))
+        k = int(np.argmin(scores))
+        best.append(cfg_f["max_features"][name][k])
+        report[name] = {"best_max_features": best[-1], "val_mae_dex": round(scores[k], 4),
+                        "all_val_mae_dex": [round(v, 4) for v in scores]}
+        log.info("val  curve_forest %-5s max_features=%s  MAE=%.3f dex", name, best[-1], scores[k])
+    return best, report
 
 
 def run(cfg: dict, ds: Dataset, out_dir: str) -> dict:
@@ -71,11 +91,15 @@ def run(cfg: dict, ds: Dataset, out_dir: str) -> dict:
         selection[f"forward_fit_{key}"] = {"val_mae_dex": round(mean_mae(ds.params[va], rv[key]), 4)}
         log.info("val  forward_fit_%s MAE=%.3f dex", key, selection[f"forward_fit_{key}"]["val_mae_dex"])
 
+    best_mf, selection["curve_forest"] = _select_forest_max_features(
+        cfg["curve_forest"], y[tr], x[tr], y[va], ds.params[va], sc, seed)
+
     # ---- final fit (optionally on train+val), then ONE evaluation on the test set ----
     fit = np.concatenate([tr, va]) if inf["refit_on_train_val"] else tr
     emu = ForwardEmulator(seed, **cfg["forward"]).fit(x[fit], c[fit])
     post = GridPosterior(emu, sc, inf["grid_per_axis"], noise, infl)
     inv = {n: make_inverse(n, best_cfg[n], seed).fit(csc.transform(c[fit]), x[fit]) for n in best_cfg}
+    forest = CurveForest(best_mf, cfg["curve_forest"]["n_estimators"], seed).fit(y[fit], x[fit])
 
     p_true = ds.params[te]
     y_hat_te = red.inverse_transform(emu.predict(x[te]))
@@ -91,14 +115,22 @@ def run(cfg: dict, ds: Dataset, out_dir: str) -> dict:
         yn = y[te] + nl * rng.standard_normal(y[te].shape) if nl > 0 else y[te]
         cn = red.transform(yn)
         preds = {"baseline_train_mean": baseline}
+        f_mean, f_std = forest.predict(yn, return_std=True)
+        preds["curve_forest"] = sc.inverse_transform(f_mean)
+        f_std = f_std * sc.span_                       # tree spread, in dex
         for n, m in inv.items():
             preds[n] = sc.inverse_transform(m.predict(csc.transform(cn)))
         r = post.infer(cn)
         preds["forward_fit_MAP"], preds["forward_fit_mean"] = r["map"], r["mean"]
         res = {n: param_metrics(p_true, p, steps) for n, p in preds.items()}
         bins = cfg["evaluation"]["sigma_bins"]
-        res["by_sigma_bin"] = {n: binned(p_true, p, bins, r["std"] if n.startswith("forward_fit") else None)
+        extra = {"forward_fit_MAP": r["std"], "forward_fit_mean": r["std"], "curve_forest": f_std}
+        res["by_sigma_bin"] = {n: binned(p_true, p, bins, extra.get(n))
                                for n, p in preds.items() if n != "baseline_train_mean"}
+        res["curve_forest_median_tree_spread_dex"] = np.median(f_std, 0).round(3).tolist()
+        res["curve_forest_spread_vs_error_spearman"] = [
+            round(float(spearmanr(f_std[:, j], np.abs(preds["curve_forest"][:, j] - p_true[:, j]))[0]), 2)
+            for j in range(2)]
         res["forward_fit_median_posterior_std_dex"] = np.median(r["std"], 0).round(3).tolist()
         results[f"noise_{nl}"] = res
         if preds0 is None:
@@ -123,7 +155,7 @@ def run(cfg: dict, ds: Dataset, out_dir: str) -> dict:
         {k: [os.path.basename(ds.files[i]) for i in v] for k, v in idx.items()}, indent=1))
     (out / "config_used.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False))
     joblib.dump({"cfg": cfg, "tf": tf, "red": red, "sc": sc, "csc": csc, "emu": emu, "post": post,
-                 "inv": inv, "u_grid": ds.u_grid, "steps": steps}, out / "bundle.joblib")
+                 "inv": inv, "forest": forest, "u_grid": ds.u_grid, "steps": steps}, out / "bundle.joblib")
     return metrics
 
 
@@ -139,8 +171,10 @@ def format_summary(m: dict) -> str:
             if isinstance(r, dict) and "mae_dex" in r:
                 lines.append(f"  {name:22s} MAE={r['mae_dex']}  within1step={r['within_1_grid_step_both']}")
         lines.append(f"  forward-fit median posterior std (dex): {res['forward_fit_median_posterior_std_dex']}")
-        lines.append("  mass MAE (dex) by true log10 sigma bin  [forward_fit_mean: median posterior std of mass]:")
-        for name in ("extra_trees", "forward_fit_mean"):
+        lines.append(f"  curve_forest median tree spread (dex): {res['curve_forest_median_tree_spread_dex']}"
+                     f"  rank-corr(spread, |error|) [sigma, mass]: {res['curve_forest_spread_vs_error_spearman']}")
+        lines.append("  mass MAE (dex) by true log10 sigma bin  [/± = median uncertainty of mass]:")
+        for name in ("curve_forest", "extra_trees", "forward_fit_mean"):
             if name in res["by_sigma_bin"]:
                 cells = []
                 for b, e in res["by_sigma_bin"][name].items():

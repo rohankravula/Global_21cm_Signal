@@ -58,3 +58,32 @@ def make_inverse(name: str, kwargs: dict | None, seed: int):
         return MLPRegressor(hidden_layer_sizes=hidden, max_iter=kw.pop("max_iter", 3000),
                             random_state=seed, **kw)
     raise ValueError(f"unknown inverse model {name!r}")
+
+
+class CurveForest:
+    """One extra-trees forest per parameter, fed the full (asinh) curve.
+
+    Using the whole curve instead of a PCA summary keeps the tiny differences that identify
+    the parameters (cut validation error ~3x). Separate forests let sigma and mass use
+    different max_features; the spread of the individual trees' predictions is a cheap
+    per-curve uncertainty estimate.
+    """
+
+    def __init__(self, max_features=(0.05, 0.3), n_estimators: int = 800, seed: int = 0):
+        self.max_features, self.n_estimators, self.seed = tuple(max_features), n_estimators, seed
+
+    def fit(self, y, u):
+        self.forests_ = [
+            ExtraTreesRegressor(n_estimators=self.n_estimators, max_features=mf,
+                                random_state=self.seed + j, n_jobs=-1).fit(y, u[:, j])
+            for j, mf in enumerate(self.max_features)]
+        return self
+
+    def predict(self, y, return_std: bool = False):
+        y32 = np.ascontiguousarray(np.atleast_2d(y), dtype=np.float32)
+        per_tree = [np.stack([t.predict(y32, check_input=False) for t in f.estimators_])
+                    for f in self.forests_]
+        mean = np.column_stack([p.mean(0) for p in per_tree])
+        if not return_std:
+            return mean
+        return mean, np.column_stack([p.std(0) for p in per_tree])
