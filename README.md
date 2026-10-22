@@ -1,6 +1,6 @@
 # Global_21cm_Signal
 
-Rohan Ravula and Aryan Rahimeh's project on the global 21cm signal and dark matter.
+Rohan Ravula's project on the global 21cm signal and dark matter.
 
 ## What this project is about
 The global 21cm signal is the average brightness temperature of hydrogen's 21cm line (`dTb`) as a function of
