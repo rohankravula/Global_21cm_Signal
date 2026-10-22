@@ -3,16 +3,40 @@
 Given a brightness-temperature curve `dTb(z)`, estimate the dark-matter–baryon cross-section σ and
 dark-matter mass that produced it. Trained on `Data files/new_data/*.npz` (17 σ × 22 mass = 374 curves).
 
+## The idea in one paragraph
+Each file in `Data files/new_data` is one simulated 21cm curve made with a known σ (dark-matter–baryon
+cross-section) and dark-matter mass, both written in the filename. The model is trained to go backwards: given a
+curve, estimate the σ and mass that produced it. 262 curves train it, 56 tune it (validation), and 56 are held back as
+a final test it never sees.
+
 ## Quick start
-Run from inside `g21_inference/` (the default data path in `config.yaml` is `../Data files/new_data`):
+Run everything from inside `g21_inference/` (the default data path in `config.yaml` is `../Data files/new_data`):
 ```bash
 python -m pip install -r requirements.txt
-python train.py                                   # takes several minutes; writes runs/<timestamp>/
-python predict.py --run runs/<timestamp> "../Data files/new_data/sigma_1.0e-40_mass_1.0e+00_dTb.npz"
-python -m pytest                                  # 10 tests
+python train.py                      # several minutes; creates a new folder runs/<YYYYMMDD_HHMMSS>/
+python predict.py                    # latest run, 5 held-out test curves: true vs predicted
+python -m pytest                     # 10 tests
 ```
-Everything tunable is in `config.yaml` (z-range, split, transform, models, noise levels).
-`predict.py --all-models` also prints the baseline models.
+
+### Training: `train.py`
+Prints the data split, the validation tuning, and a final TEST table (error in dex, plus the share of curves within one
+grid step) at several noise levels, then `Saved to runs/<timestamp>/`. Every run gets its own folder, so earlier runs
+are never overwritten. Options: `--config`, `--data-dir`, `--out-dir`, `--z-min`, `--z-max`. Most settings live in
+`config.yaml`; each run saves the settings it used as `config_used.yaml`.
+
+### Predicting: `predict.py`
+```bash
+python predict.py                                    # latest run, 5 held-out test curves
+python predict.py 20261021_223357                    # a specific run, by name (ls runs)
+python predict.py 20261021_223357 --n 10             # more test curves
+python predict.py 20261021_223357 path/to/curve.npz  # your own curve(s)
+python predict.py --all-models                       # also print the baseline models
+```
+With no curve files it uses evenly spaced curves from the run's test set (never seen in training). For each curve it
+prints the true σ and mass (read from the filename), the prediction with ± tree spread, and the error in dex
+(1 dex = a factor of 10), then the average error. A "large tree spread" note means mass is poorly determined for that
+curve. A wrong run name lists the runs that exist. Curves need arrays `z` and `dTb`; files without σ and mass in the
+name just get a prediction.
 
 ## What it does
 1. **Load/clean** (`g21/data.py`): sort by z, drop duplicate z points, reject NaN/corrupt files (reported, not silent),
@@ -28,7 +52,15 @@ Everything tunable is in `config.yaml` (z-range, split, transform, models, noise
    forward-fit posterior (gives principled uncertainty when the data are noisy).
 6. **Evaluate once on test**, at noise 0 / 0.05 / 0.2 (Gaussian noise in asinh units), overall and per σ regime.
 
-Outputs per run: `metrics.json`, `split.json`, `config_used.yaml`, `test_pred_vs_true.png`, `emulator_examples.png`, `bundle.joblib`.
+Outputs per run (in `runs/<timestamp>/`):
+- `metrics.json`: all scores (validation tuning and test results at each noise level)
+- `split.json`: which files are in train / val / test
+- `config_used.yaml`: the exact settings used
+- `test_pred_vs_true.png`: predicted vs true σ and mass on the test set
+- `emulator_examples.png`: example curves from the forward-fit baseline
+- `bundle.joblib`: the trained models (what `predict.py` loads)
+
+`example_run/` holds a sample of these files from the seed-42 run.
 
 ## Results
 Grid spacing is 0.25 dex in σ and 0.34 dex in mass. Errors are mean absolute error in dex on **noise-free** held-out curves.
